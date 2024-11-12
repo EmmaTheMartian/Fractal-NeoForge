@@ -23,11 +23,10 @@ public static final Identifier GROUP_ID = Identifier.of("mymod", "main");
 public static final ItemGroup MAIN = FabricItemGroup.builder()
 		.icon(() -> new ItemStack(Blocks.REDSTONE_BLOCK))
 		.entries((displayContext, entries) -> {
-		    entries.add(Items.APPLE, ItemGroup.StackVisibility.PARENT_TAB_ONLY);
-		    ItemGroupParent parent = (ItemGroupParent) Fractal.MAIN;
-		    for (ItemSubGroup subGroup : parent.fractal$getChildren()) {
-		        entries.addAll(subGroup.getSearchTabStacks(), ItemGroup.StackVisibility.SEARCH_TAB_ONLY);
-		    }
+			entries.add(Items.APPLE, ItemGroup.StackVisibility.PARENT_TAB_ONLY);
+			for (ItemSubGroup subGroup : Fractal.MAIN.fractal$getChildren()) {
+				entries.addAll(subGroup.getSearchTabStacks(), ItemGroup.StackVisibility.SEARCH_TAB_ONLY);
+			}
 		})
 		.displayName(Text.translatable("mymod.1"))
 		.noRenderedName()

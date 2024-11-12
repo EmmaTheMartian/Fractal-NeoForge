@@ -6,6 +6,7 @@ import net.fabricmc.api.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen.*;
+import net.minecraft.client.render.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.text.*;
@@ -18,7 +19,7 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 @Mixin(CreativeInventoryScreen.class)
-public abstract class CreativeInventoryScreenAddTabsMixin extends AbstractInventoryScreen<CreativeScreenHandler> implements SubTabLocation, CreativeInventoryScreenAccessor {
+public abstract class CreativeInventoryScreenAddTabsMixin extends HandledScreen<CreativeScreenHandler> implements SubTabLocation, CreativeInventoryScreenAccessor {
 	
 	@Unique
 	private static final int LAST_TAB_INDEX_RENDERING_LEFT = 11;
@@ -51,7 +52,7 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends AbstractInvent
 				int x = context.drawText(textRenderer, selectedTab.getDisplayName(), this.x + 8, this.y + 6, 4210752, false);
 				if (child != null) {
 					x = context.drawText(textRenderer, " ", x, this.y + 6, 4210752, false);
-					x = context.drawText(textRenderer, child.getDisplayName(), x, this.y + 6, 4210752, false);
+					context.drawText(textRenderer, child.getDisplayName(), x, this.y + 6, 4210752, false);
 				}
 			}
 			
@@ -72,32 +73,29 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends AbstractInvent
 						? rendersOnTheRight ? style.selectedSubtabTextureRight() :  style.selectedSubtabTextureLeft()
 						: rendersOnTheRight ? style.unselectedSubtabTextureRight() : style.unselectedSubtabTextureLeft();
 				
-				context.setShaderColor(1, 1, 1, 1);
-				context.drawGuiTexture(subtabTextureID, pos[0] - tabStartOffset, pos[1], 72, 11);
+				context.drawGuiTexture(RenderLayer::getGuiTextured, subtabTextureID, pos[0] - tabStartOffset, pos[1], 72, 11);
 				
 				int textOffset = thisChildSelected ? 8 : 5; // makes the text pop slightly outwards if selected
 				String tabDisplayName = child.getDisplayName().getString();
 				if(rendersOnTheRight) {
-					context.draw(() -> {
-						context.setShaderColor(0, 0, 0, 1);
+					context.draw(vertexConsumerProvider -> {
 						for (int i = 0; i < tabDisplayName.length(); i++) {
 							char c = tabDisplayName.charAt(i);
 							if (c > 0x7F) continue;
 							int u = (c % 16) * 4;
 							int v = (c / 16) * 6;
-							context.drawTexture(TINYFONT_TEXTURE, pos[0] + 1 - tabStartOffset + textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
+							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] + 1 - tabStartOffset + textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
 							pos[0] += 4;
 						}
 					});
 				} else {
-					context.draw(() -> {
-						context.setShaderColor(0, 0, 0, 1);
+					context.draw(vertexConsumerProvider -> {
 						for (int i = tabDisplayName.length() - 1; i >= 0; i--) {
 							char c = tabDisplayName.charAt(i);
 							if (c > 0x7F) continue;
 							int u = (c % 16) * 4;
 							int v = (c / 16) * 6;
-							context.drawTexture(TINYFONT_TEXTURE, pos[0] - textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
+							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] - textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
 							pos[0] -= 4;
 						}
 					});
@@ -118,8 +116,6 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends AbstractInvent
 			
 			fractal$h = 11 * Math.min(LAST_TAB_INDEX_RENDERING_LEFT + 1, children.size());
 			fractal$h2 = 11 * Math.max(0, children.size() - LAST_TAB_INDEX_RENDERING_LEFT - 1);
-			
-			context.setShaderColor(1, 1, 1, 1);
 		}
 	}
 	
