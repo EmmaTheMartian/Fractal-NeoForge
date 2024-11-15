@@ -1,16 +1,10 @@
 package de.dafuqs.fractal;
 
-import de.dafuqs.fractal.api.*;
 import net.fabricmc.api.*;
-import net.fabricmc.fabric.api.itemgroup.v1.*;
-import net.minecraft.block.*;
-import net.minecraft.item.*;
-import net.minecraft.registry.*;
-import net.minecraft.text.*;
-import net.minecraft.util.*;
 
 public class Fractal implements ModInitializer {
 	
+	/*
 	// Texture (put into \resources\assets\fractal\textures\gui\container\creative_inventory)
 	public static final Identifier BACKGROUND_TEXTURE = Identifier.of("fractal", "textures/gui/container/creative_inventory/custom_background.png");
 	
@@ -61,10 +55,11 @@ public class Fractal implements ModInitializer {
 	public static final ItemGroup FUNCTIONAL = new ItemSubGroup.Builder(MAIN, Identifier.of("mymod", "functional"), Text.translatable("itemGroup.mymod.functional")).styled(STYLE).entries((displayContext, entries) -> entries.add(Items.BAKED_POTATO)).build();
 	public static final ItemGroup CUISINE = new ItemSubGroup.Builder(MAIN, Identifier.of("mymod", "cuisine"), Text.translatable("itemGroup.mymod.cuisine")).entries((displayContext, entries) -> entries.add(Items.CACTUS)).build();
 	public static final ItemGroup RESOURCES = new ItemSubGroup.Builder(MAIN, Identifier.of("mymod", "resources"), Text.translatable("itemGroup.mymod.resources")).entries((displayContext, entries) -> entries.add(Items.DANDELION)).build();
+	*/
 	
 	@Override
 	public void onInitialize() {
-		Registry.register(Registries.ITEM_GROUP, GROUP_ID, MAIN);
+		//Registry.register(Registries.ITEM_GROUP, GROUP_ID, MAIN);
 	}
 	
 }
