@@ -1,7 +1,7 @@
 package de.dafuqs.fractal.mixin.client;
 
-import de.dafuqs.fractal.interfaces.*;
 import de.dafuqs.fractal.api.*;
+import de.dafuqs.fractal.interfaces.*;
 import net.fabricmc.api.*;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.ingame.*;
@@ -25,22 +25,23 @@ public abstract class CreativeInventoryScreenCustomTextureMixin {
 	private ItemGroup fractal$renderedItemGroup;
 	
 	// BACKGROUND
-	@ModifyArg(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 0))
+	@ModifyArg(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIII)V"))
 	private Identifier injectCustomGroupTexture(Identifier original) {
 		ItemSubGroup subGroup = getSelectedSubGroup();
 		return (subGroup == null || subGroup.getStyle().backgroundTexture() == null) ? original : subGroup.getStyle().backgroundTexture();
 	}
 	
 	// SCROLLBAR
-	@ModifyArgs(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
-	private void injectCustomScrollbarTexture(org.spongepowered.asm.mixin.injection.invoke.arg.Args args) {
+	@ModifyArg(method = "drawBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"))
+	private Identifier injectCustomScrollbarTexture(Identifier original) {
 		ItemSubGroup subGroup = getSelectedSubGroup();
 		if(subGroup != null) {
 			Identifier scrollbarTextureID = this.hasScrollbar() ? subGroup.getStyle().enabledScrollbarTexture() : subGroup.getStyle().disabledScrollbarTexture();
 			if(scrollbarTextureID != null) {
-				args.set(0, scrollbarTextureID);
+				return scrollbarTextureID;
 			}
 		}
+		return original;
 	}
 	
 	// ICON
@@ -49,7 +50,7 @@ public abstract class CreativeInventoryScreenCustomTextureMixin {
 		this.fractal$renderedItemGroup = group;
 	}
 	
-	@ModifyArg(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"))
+	@ModifyArg(method = "renderTabIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"))
 	private Identifier injectCustomTabTexture(Identifier original) {
 		ItemSubGroup subGroup = getRenderedSubGroup();
 		if(subGroup == null) {
