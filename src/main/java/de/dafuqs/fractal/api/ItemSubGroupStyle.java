@@ -3,7 +3,7 @@ package de.dafuqs.fractal.api;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
 
-public record ItemSubGroupStyle(@Nullable Identifier backgroundTexture,
+public record ItemSubGroupStyle(@Nullable Identifier backgroundTexture, int subtabNameTextColor,
 								
 								@Nullable Identifier selectedSubtabTextureLeft,
 								@Nullable Identifier unselectedSubtabTextureLeft,
@@ -34,6 +34,7 @@ public record ItemSubGroupStyle(@Nullable Identifier backgroundTexture,
 	public static class Builder {
 		
 		protected @Nullable Identifier backgroundTexture;
+		protected int subtabNameTextColor = 0xFF000000; // default vanilla text is 0xFF404040;
 		
 		protected @Nullable Identifier selectedSubtabTextureLeft = DEFAULT_SUBTAB_SELECTED_TEXTURE_LEFT;
 		protected @Nullable Identifier unselectedSubtabTextureLeft = DEFAULT_SUBTAB_UNSELECTED_TEXTURE_LEFT;
@@ -62,6 +63,11 @@ public record ItemSubGroupStyle(@Nullable Identifier backgroundTexture,
 		
 		public Builder background(Identifier backgroundTexture) { // texture
 			this.backgroundTexture = backgroundTexture;
+			return this;
+		}
+		
+		public Builder subtabNameTextColor(int color) {
+			this.subtabNameTextColor = color;
 			return this;
 		}
 		
@@ -100,7 +106,7 @@ public record ItemSubGroupStyle(@Nullable Identifier backgroundTexture,
 		}
 		
 		public ItemSubGroupStyle build() {
-			return new ItemSubGroupStyle(backgroundTexture,
+			return new ItemSubGroupStyle(backgroundTexture, subtabNameTextColor,
 					selectedSubtabTextureLeft, unselectedSubtabTextureLeft, selectedSubtabTextureRight, unselectedSubtabTextureRight,
 					enabledScrollbarTexture, disabledScrollbarTexture,
 					tabTopFirstSelectedTexture, tabTopSelectedTexture, tabTopLastSelectedTexture, tabTopFirstUnselectedTexture, tabTopUnselectedTexture, tabTopLastUnselectedTexture,

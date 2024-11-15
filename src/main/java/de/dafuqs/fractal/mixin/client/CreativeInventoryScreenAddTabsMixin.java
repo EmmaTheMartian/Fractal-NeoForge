@@ -76,6 +76,7 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends HandledScreen<
 				context.drawGuiTexture(RenderLayer::getGuiTextured, subtabTextureID, pos[0] - tabStartOffset, pos[1], 72, 11);
 				
 				int textOffset = thisChildSelected ? 8 : 5; // makes the text pop slightly outwards if selected
+				int textColor = child.getStyle().subtabNameTextColor();
 				String tabDisplayName = child.getDisplayName().getString();
 				if(rendersOnTheRight) {
 					context.draw(vertexConsumerProvider -> {
@@ -84,7 +85,7 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends HandledScreen<
 							if (c > 0x7F) continue;
 							int u = (c % 16) * 4;
 							int v = (c / 16) * 6;
-							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] + 1 - tabStartOffset + textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
+							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] + 1 - tabStartOffset + textOffset, pos[1] + 3, u, v, 4, 6, 64, 48, textColor);
 							pos[0] += 4;
 						}
 					});
@@ -95,7 +96,7 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends HandledScreen<
 							if (c > 0x7F) continue;
 							int u = (c % 16) * 4;
 							int v = (c / 16) * 6;
-							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] - textOffset, pos[1] + 3, u, v, 4, 6, 64, 48);
+							context.drawTexture(RenderLayer::getGuiTextured, TINYFONT_TEXTURE, pos[0] - textOffset, pos[1] + 3, u, v, 4, 6, 64, 48, textColor);
 							pos[0] -= 4;
 						}
 					});
