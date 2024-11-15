@@ -11,7 +11,35 @@ Fractal introduces item **subgroups for the creative menu**.
 - More than 12 subgroups per item group, while fully functional, will look weird.
 - The tiny font used for the labels does not support full unicode
 
-## Examples
+# How to Use
+
+### Where to get
+
+You can find Fractal in:
+
+```gradle
+repositories {
+	maven { url = "https://maven.is-immensely.gay/releases" }
+}
+
+dependencies {
+	modImplementation include("de.dafuqs:fractal:${project.fractal_version}")
+}
+```
+
+or get it from the Modrinth Maven:
+
+```gradle
+repositories {
+	maven { url = "https://api.modrinth.com/maven" }
+}
+
+dependencies {
+	modImplementation include("maven.modrinth:fractal-lib:${project.fractal_version}")
+}
+```
+
+## Example Implementation
 
 ### Vanilla Style Subgroups
 
