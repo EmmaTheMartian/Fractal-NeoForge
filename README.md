@@ -172,4 +172,4 @@ Fractal. You can run it using `gradlew runTestmodClient`.
 ## Todo
 
 - [ ] Add test for CreativeSubTabEvent
-- [ ] JEI and REI integration
+- [x] JEI and REI integration

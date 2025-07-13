@@ -33,11 +33,19 @@ repositories {
 			includeGroup("dev.architectury")
 		}
 	}
+
+	// JEI
+	maven("https://maven.blamejared.com/") {
+		content {
+			includeGroup("mezz.jei")
+		}
+	}
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:${prop("minecraft_version")}")
 
+	@Suppress("UnstableApiUsage")
 	mappings(loom.layered {
 		officialMojangMappings()
 		parchment("org.parchmentmc.data:parchment-${prop("parchment_minecraft_version")}:${prop("parchment_mappings_version")}@zip")
@@ -46,13 +54,17 @@ dependencies {
 	neoForge("net.neoforged:neoforge:${prop("neo_version")}")
 
 	// Recipe viewers
+	compileOnly("mezz.jei:jei-${prop("minecraft_version")}-neoforge-api:${prop("jei_version")}")
+//	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-neoforge:${prop("rei_version")}")
+	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-neoforge:${prop("rei_version")}")
+	modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:${prop("rei_version")}")
+//	modApi("me.shedaniel.cloth:basic-math:0.6.1")
 	modCompileOnly("dev.emi:emi-neoforge:${prop("emi_version")}")
 	modCompileOnly("dev.emi:emi-neoforge:${prop("emi_version")}:api")
-	//    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${project.rei_version}"
-	//    modApi "me.shedaniel.cloth:basic-math:0.6.1"
 
 	when (prop("recipe_viewer").lowercase()) {
-	//        case "rei": modLocalRuntime("me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"); break
+		"jei" -> runtimeOnly("mezz.jei:jei-${prop("minecraft_version")}-neoforge:${prop("jei_version")}")
+		"rei" -> modLocalRuntime("me.shedaniel:RoughlyEnoughItems-neoforge:${prop("rei_version")}")
 		"emi" -> modLocalRuntime("dev.emi:emi-neoforge:${prop("emi_version")}")
 		"disabled" -> {}
 		else -> println("Unknown recipe viewer specified: ${prop("recipe_viewer")}. Must be EMI, REI or disabled.")

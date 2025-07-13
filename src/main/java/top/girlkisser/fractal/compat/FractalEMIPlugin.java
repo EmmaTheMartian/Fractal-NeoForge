@@ -10,6 +10,7 @@ import top.girlkisser.fractal.interfaces.ICreativeTabParent;
 import top.girlkisser.fractal.interfaces.ISubTabLocation;
 import top.girlkisser.fractal.mixin.client.CreativeModeInventoryScreenAccessor;
 
+@SuppressWarnings("unused")
 @EmiEntrypoint
 public class FractalEMIPlugin implements EmiPlugin
 {
