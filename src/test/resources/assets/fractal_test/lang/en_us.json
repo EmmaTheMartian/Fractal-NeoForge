@@ -1,0 +1,9 @@
+{
+  "itemGroup.fractal.main": "Fractal",
+  "itemGroup.fractal.redstone": "Redstone",
+  "itemGroup.fractal.components": "Components",
+  "itemGroup.fractal.logistics": "Logistics",
+  "itemGroup.fractal.automation": "Automation",
+  "itemGroup.fractal.comparator_outputs": "Comparator",
+  "itemGroup.fractal.misc": "Misc"
+}
