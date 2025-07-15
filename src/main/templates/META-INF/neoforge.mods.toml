@@ -16,6 +16,9 @@ issueTrackerURL = "https://github.com/emmathemartian/fractal-neoforge/issues"
 [[mixins]]
     config = "${mod_id}.mixins.json"
 
+[[accessTransformer]]
+    file = "META-INF/accesstransformer.cfg"
+
 [[dependencies."${mod_id}"]]
     modId = "neoforge"
     type = "required"

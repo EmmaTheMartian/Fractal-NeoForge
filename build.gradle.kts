@@ -72,8 +72,6 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/fractal.accesswidener")
-
 	runs {
 		register("testmodClient") {
 			client()
