@@ -1,9 +1,7 @@
 package top.girlkisser.fractal.mixin.client;
 
-import top.girlkisser.fractal.api.CreativeSubTab;
-import top.girlkisser.fractal.api.CreativeSubTabStyle;
-import top.girlkisser.fractal.interfaces.ICreativeTabParent;
-import top.girlkisser.fractal.interfaces.ISubTabLocation;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -20,6 +18,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.girlkisser.fractal.api.CreativeSubTab;
+import top.girlkisser.fractal.api.CreativeSubTabStyle;
+import top.girlkisser.fractal.interfaces.ICreativeTabParent;
+import top.girlkisser.fractal.interfaces.ISubTabLocation;
 
 import java.util.List;
 
@@ -51,20 +53,32 @@ public abstract class CreativeInventoryScreenAddTabsMixin extends EffectRenderin
 	@Unique
 	private int fractal$x2, fractal$h2; // right tabs
 
+	@WrapWithCondition(method = "renderLabels", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"))
+	public boolean fractal$wrapParentTitle(GuiGraphics graphics, Font font, Component text, int x, int y, int color, boolean dropShadow)
+	{
+		if (selectedTab instanceof ICreativeTabParent parent && !parent.fractal$getChildren().isEmpty())
+		{
+			CreativeSubTab child = parent.fractal$getSelectedChild();
+			return child == null; // Parent title rendering is actually handled in fractal$renderSubTabs.
+		}
+		return true;
+	}
+
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen;renderTooltip(Lnet/minecraft/client/gui/GuiGraphics;II)V"))
-	public void fractal$render(GuiGraphics graphics, int mouseX, int mouseY, float delta, CallbackInfo ci)
+	public void fractal$renderSubTabs(GuiGraphics graphics, int mouseX, int mouseY, float delta, CallbackInfo ci)
 	{
 		if (selectedTab instanceof ICreativeTabParent parent && !parent.fractal$getChildren().isEmpty())
 		{
 			if (selectedTab.showTitle())
 			{
-				CreativeModeTab child = parent.fractal$getSelectedChild();
-				int x = graphics.drawString(font, selectedTab.getDisplayName(), this.leftPos + 8, this.topPos + 6, 4210752, false);
-				if (child != null)
+				CreativeSubTab child = parent.fractal$getSelectedChild();
+				int x = this.leftPos + 8;
+				if (child.shouldShowParentTitle())
 				{
+					x = graphics.drawString(font, selectedTab.getDisplayName(), x, this.topPos + 6, 4210752, false);
 					x = graphics.drawString(font, " ", x, this.topPos + 6, 4210752, false);
-					graphics.drawString(font, child.getDisplayName(), x, this.topPos + 6, 4210752, false);
 				}
+				graphics.drawString(font, child.getDisplayName(), x, this.topPos + 6, 4210752, false);
 			}
 
 			int[] pos = { this.leftPos, this.topPos + 6 };

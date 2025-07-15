@@ -196,6 +196,8 @@ public class FractalTestMod
 			entries.accept(Items.BIG_DRIPLEAF);
 			entries.accept(Items.ARMOR_STAND);
 		})
+		// Normally subtab titles show as `<Parent Tab Title> <Sub Tab Title>`, this changes it to just be the sub tab's title.
+		.hideParentTitle()
 		.build();
 
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);

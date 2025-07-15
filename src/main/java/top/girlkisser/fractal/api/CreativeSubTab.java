@@ -22,6 +22,7 @@ public class CreativeSubTab extends CreativeModeTab
 	protected final ResourceLocation identifier;
 	protected final int indexInParent;
 	protected final CreativeSubTabStyle style;
+	protected boolean showParentTitle = true;
 
 	public static final CreativeSubTabStyle DEFAULT_STYLE = new CreativeSubTabStyle.Builder().build();
 
@@ -61,6 +62,11 @@ public class CreativeSubTab extends CreativeModeTab
 	public ResourceLocation getIdentifier()
 	{
 		return identifier;
+	}
+
+	public boolean shouldShowParentTitle()
+	{
+		return showParentTitle;
 	}
 
 	/**
@@ -146,6 +152,7 @@ public class CreativeSubTab extends CreativeModeTab
 		protected final ResourceLocation identifier;
 		protected Component displayName;
 		protected CreativeSubTabStyle style = DEFAULT_STYLE;
+		protected boolean showParentTitle = true;
 		private DisplayItemsGenerator entryCollector;
 
 		public Builder(CreativeModeTab parent, ResourceLocation identifier, Component displayName)
@@ -167,11 +174,23 @@ public class CreativeSubTab extends CreativeModeTab
 			return this;
 		}
 
+		public Builder setShouldShowParentTitle(boolean value)
+		{
+			this.showParentTitle = value;
+			return this;
+		}
+
+		public Builder hideParentTitle()
+		{
+			return setShouldShowParentTitle(false);
+		}
+
 		public CreativeSubTab build()
 		{
-			CreativeSubTab subGroup = new CreativeSubTab(parent, identifier, displayName, entryCollector, style);
-			SUBTABS.add(subGroup);
-			return subGroup;
+			CreativeSubTab subtab = new CreativeSubTab(parent, identifier, displayName, entryCollector, style);
+			subtab.showParentTitle = this.showParentTitle;
+			SUBTABS.add(subtab);
+			return subtab;
 		}
 	}
 }
