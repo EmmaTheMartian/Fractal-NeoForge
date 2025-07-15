@@ -142,6 +142,7 @@ publishing {
 	publications {
 		register<MavenPublication>("mavenJava") {
 			from(components["java"])
+			artifactId = prop("mod_id")
 		}
 	}
 
